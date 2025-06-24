@@ -9,6 +9,11 @@ const port = process.env.PORT || 3050;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
+  next();
+});
+
 const db = new sqlite3.Database('./ideas.db', (err) => {
   if (err) {
     console.error(err.message);
@@ -65,7 +70,7 @@ app.delete('/api/ideas', (req, res) => {
 
   if (id) {
     if (todas) {
-      return res.status(400).json({ error: 'No se puede especificar "id" y "todas" al mismo tiempo.' });
+      return res.status(400).json({ error: 'Debe especificar "id".' });
     }
     db.get(`SELECT * FROM ideas WHERE id = ?`, [id], (err, row) => {
       if (err) {
