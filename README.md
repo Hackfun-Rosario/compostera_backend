@@ -21,7 +21,7 @@ Este es un servidor Express.js para gestionar una base de datos de "ideas".
 Para iniciar el servidor, ejecuta:
 
 ```bash
-npm start
+npm run start
 ```
 
 El servidor se iniciará en el puerto especificado en el archivo `.env` (por defecto, 3050).
