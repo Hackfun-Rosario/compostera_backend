@@ -31,7 +31,7 @@ El servidor se iniciará en el puerto especificado en el archivo `.env` (por def
 - `POST /api/ideas`: Crea una nueva idea.
 - `GET /api/ideas`: Obtiene todas las ideas.
 - `DELETE /api/ideas?id=<id>`: Borra una idea por su ID.
-- `DELETE /api/ideas`: Borra todas las ideas.
+- `DELETE /api/ideas?todas=true`: Borra todas las ideas.
 
 ## Documentación de la API
 
