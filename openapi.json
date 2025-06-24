@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Ideas",
+    "version": "1.0.0",
+    "description": "Una API para gestionar una base de datos de ideas."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3050/api"
+    }
+  ],
+  "paths": {
+    "/ideas": {
+      "post": {
+        "summary": "Crear una nueva idea",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string",
+                    "description": "Nombre de la idea (requerido)"
+                  },
+                  "descripcion": {
+                    "type": "string",
+                    "description": "Descripción de la idea (opcional)"
+                  }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Idea creada exitosamente"
+          },
+          "400": {
+            "description": "Datos de entrada inválidos"
+          }
+        }
+      },
+      "get": {
+        "summary": "Obtener todas las ideas",
+        "responses": {
+          "200": {
+            "description": "Una lista de ideas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Idea"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Borrar una idea por ID o borrar todas las ideas",
+        "description": "Borra una idea específica por su ID, o borra todas las ideas si el parámetro 'todas' es true. Se debe proveer 'id' o 'todas', pero no ambos.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "El ID de la idea a borrar.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "todas",
+            "in": "query",
+            "description": "Poner en true para borrar todas las ideas.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea(s) borrada(s) exitosamente"
+          },
+          "400": {
+            "description": "Parámetros inválidos"
+          },
+          "404": {
+            "description": "Idea no encontrada"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Idea": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "descripcion": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
