@@ -2,12 +2,16 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3050;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: 'https://compostera.hackfunrosario.com',
+}));
 
 app.use((req, res, next) => {
   console.log(`Request received: ${req.method} ${req.url}`);
