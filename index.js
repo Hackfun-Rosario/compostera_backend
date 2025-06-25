@@ -71,6 +71,11 @@ app.get('/api/ideas', (req, res) => {
 app.delete('/api/ideas', (req, res) => {
   const id = req.query.id;
   const todas = req.query.todas;
+  const password = req.query.password;
+
+  if (password !== 'funhack') {
+    return res.status(403).json({ error: 'Acceso denegado. Se requiere una contraseña válida.' });
+  }
 
   if (id) {
     if (todas) {
