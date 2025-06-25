@@ -60,7 +60,7 @@ app.post('/api/ideas', (req, res) => {
 });
 
 app.get('/api/ideas', (req, res) => {
-  db.all(`SELECT * FROM ideas`, [], (err, rows) => {
+  db.all(`SELECT * FROM ideas ORDER BY fecha DESC`, [], (err, rows) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
