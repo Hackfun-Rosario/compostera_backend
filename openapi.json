@@ -28,6 +28,10 @@
                   "descripcion": {
                     "type": "string",
                     "description": "Descripción de la idea (opcional)"
+                  },
+                  "alias": {
+                    "type": "string",
+                    "description": "Alias de la idea (opcional)"
                   }
                 },
                 "required": ["nombre"]
@@ -114,6 +118,9 @@
             "format": "date-time"
           },
           "descripcion": {
+            "type": "string"
+          },
+          "alias": {
             "type": "string"
           }
         }

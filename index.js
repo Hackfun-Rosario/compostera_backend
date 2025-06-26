@@ -28,12 +28,13 @@ db.serialize(() => {
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
     fecha TEXT,
-    descripcion TEXT
+    descripcion TEXT,
+    alias TEXT
   )`);
 });
 
 app.post('/api/ideas', (req, res) => {
-  const { nombre, descripcion } = req.body;
+  const { nombre, descripcion, alias } = req.body;
 
 
   if (!nombre) {
@@ -44,10 +45,11 @@ app.post('/api/ideas', (req, res) => {
     nombre,
     fecha: new Date().toISOString(),
     descripcion: descripcion || '',
+    alias: alias || ''
   };
   db.run(
-    `INSERT INTO ideas (id, nombre, fecha, descripcion) VALUES (?, ?, ?, ?)`,
-    [newIdea.id, newIdea.nombre, newIdea.fecha, newIdea.descripcion],
+    `INSERT INTO ideas (id, nombre, fecha, descripcion, alias) VALUES (?, ?, ?, ?, ?)`,
+    [newIdea.id, newIdea.nombre, newIdea.fecha, newIdea.descripcion, newIdea.alias],
     function (err) {
       if (err) {
         return res.status(500).json({ error: err.message });
