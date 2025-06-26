@@ -99,6 +99,39 @@
           }
         }
       }
+    },
+    "/ideas/voto": {
+      "post": {
+        "summary": "Incrementar el valor de voto de una idea",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID de la idea a incrementar el voto (requerido)"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voto incrementado exitosamente"
+          },
+          "400": {
+            "description": "Datos de entrada inválidos"
+          },
+          "404": {
+            "description": "Idea no encontrada"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -122,6 +155,9 @@
           },
           "alias": {
             "type": "string"
+          },
+          "voto": {
+            "type": "integer"
           }
         }
       }

@@ -29,7 +29,8 @@ db.serialize(() => {
     nombre TEXT NOT NULL,
     fecha TEXT,
     descripcion TEXT,
-    alias TEXT
+    alias TEXT,
+    voto INTEGER DEFAULT 0
   )`);
 });
 
@@ -45,11 +46,12 @@ app.post('/api/ideas', (req, res) => {
     nombre,
     fecha: new Date().toISOString(),
     descripcion: descripcion || '',
-    alias: alias || ''
+    alias: alias || '',
+    voto: 0
   };
   db.run(
-    `INSERT INTO ideas (id, nombre, fecha, descripcion, alias) VALUES (?, ?, ?, ?, ?)`,
-    [newIdea.id, newIdea.nombre, newIdea.fecha, newIdea.descripcion, newIdea.alias],
+    `INSERT INTO ideas (id, nombre, fecha, descripcion, alias, voto) VALUES (?, ?, ?, ?, ?, ?)`,
+    [newIdea.id, newIdea.nombre, newIdea.fecha, newIdea.descripcion, newIdea.alias, newIdea.voto],
     function (err) {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -105,6 +107,31 @@ app.delete('/api/ideas', (req, res) => {
   } else {
     res.status(400).json({ error: 'Debe proporcionar un "id" para borrar una idea específica, o "todas=true" para borrar todas las ideas.' });
   }
+});
+
+app.post('/api/ideas/voto', (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: 'El campo "id" es requerido.' });
+  }
+
+  db.get(`SELECT * FROM ideas WHERE id = ?`, [id], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (!row) {
+      return res.status(404).json({ error: 'Idea no encontrada.' });
+    }
+
+    const newVoto = row.voto + 1;
+    db.run(`UPDATE ideas SET voto = ? WHERE id = ?`, [newVoto, id], function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id, voto: newVoto });
+    });
+  });
 });
 
 app.listen(port, () => {
